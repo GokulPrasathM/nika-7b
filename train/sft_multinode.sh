@@ -1,5 +1,5 @@
 uid="$(date +%Y%m%d_%H%M%S)"
-base_model="Qwen/Qwen2.5-32B-Instruct" # meta-llama/Llama-3.1-70B-Instruct
+base_model="deepseek-ai/DeepSeek-R1-Distill-Qwen-7B" # meta-llama/Llama-3.1-70B-Instruct
 lr=1e-5
 min_lr=0
 epochs=5
@@ -21,7 +21,7 @@ train/sft.py \
 --per_device_train_batch_size=${micro_batch_size} \
 --per_device_eval_batch_size=${micro_batch_size} \
 --gradient_accumulation_steps=${gradient_accumulation_steps} \
---train_file_path="simplescaling/s1K_tokenized" \
+--train_file_path="simplescaling/s1K-1.1_tokenized" \
 --block_size=32768 \
 --model_name=${base_model} \
 --warmup_ratio=0.05 \
