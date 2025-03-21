@@ -5,7 +5,7 @@ lr=1e-5
 epochs=5
 batch_size=16
 weight_decay=1e-4
-train_dataset_name="s1K_tokenized"
+train_dataset_name="s1K-1.1_tokenized"
 uid="$(date +%Y%m%d_%H%M%S)"
 
 # Parse command-line arguments
@@ -52,7 +52,7 @@ torchrun \
     --gradient_accumulation_steps=$grad_acc \
     --num_train_epochs=${epochs} \
     --train_file_path="simplescaling/${train_dataset_name}" \
-    --model_name="Qwen/Qwen2.5-32B-Instruct" \
+    --model_name="deepseek-ai/DeepSeek-R1-Distill-Qwen-7B" \
     --warmup_ratio=0.05 \
     --report_to="none" \
     --fsdp="full_shard auto_wrap" \
