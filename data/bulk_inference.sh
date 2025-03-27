@@ -11,7 +11,7 @@ for shard_index in {0..5}; do
         python data/scripts/bulk_inference.py \
         --shard_index ${shard_index} \
         --model_name deepseek-ai/DeepSeek-R1-Distill-Qwen-7B \
-        > data/scripts/log/qwen_7b_base_${shard_index}.txt 2>&1 &
+        > data/scripts/log/r1_qwen_7b_${shard_index}.txt 2>&1 &
 done
 
 # iterate over shard_index for 0 to 6, including 0 and 6
@@ -26,5 +26,5 @@ for shard_index in {0..5}; do
         python data/scripts/bulk_inference.py \
         --shard_index ${shard_index} \
         --model_name deepseek-ai/DeepSeek-R1-Distill-Qwen-14B \
-        > data/scripts/log/qwen_32b_base_${shard_index}.txt 2>&1 &
+        > data/scripts/log/r1_qwen_14b_${shard_index}.txt 2>&1 &
 done
