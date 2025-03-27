@@ -10,7 +10,7 @@ for shard_index in {0..5}; do
         --time=3-00:00:00 \
         python data/scripts/bulk_inference.py \
         --shard_index ${shard_index} \
-        --model_name Qwen/Qwen2.5-7B-Instruct \
+        --model_name deepseek-ai/DeepSeek-R1-Distill-Qwen-7B \
         > data/scripts/log/qwen_7b_base_${shard_index}.txt 2>&1 &
 done
 
@@ -25,6 +25,6 @@ for shard_index in {0..5}; do
         --time=3-00:00:00 \
         python data/scripts/bulk_inference.py \
         --shard_index ${shard_index} \
-        --model_name Qwen/Qwen2.5-32B-Instruct \
+        --model_name deepseek-ai/DeepSeek-R1-Distill-Qwen-14B \
         > data/scripts/log/qwen_32b_base_${shard_index}.txt 2>&1 &
 done
