@@ -15,14 +15,14 @@ from data.utils.io_utils import question_hash, jdump, jload
 
 @dataclass
 class DataModuleConfigs:
-    model_name: str = field(default="Qwen/Qwen2.5-32B-Instruct", metadata={'help': 'Model name'})
+    model_name: str = field(default="deepseek-ai/DeepSeek-R1-Distill-Qwen-14B", metadata={'help': 'Model name'})
     shard_index: int = field(default=0, metadata={'help': 'Shard index'})
 
 def shard_question(chunk_size: int=10_000):
-    questions = load_dataset("qfq/train")['train']['question']
+    questions = load_dataset("BeastGokul/s2")['train']['question']
     for i in range(0, len(questions), chunk_size):
         shard = questions[i:i+chunk_size]
-        jdump(shard,f"results/difficulty_classification/qwen32b_instruct_inference/shard_{i//chunk_size}_input.json")
+        jdump(shard,f"results/difficulty_classification/r1_inference/shard_{i//chunk_size}_input.json")
 
 def _qwen_forward(
     prompts: Sequence[str],
@@ -93,26 +93,10 @@ def assemble_output(model_name: str, upload: bool = False):
         new_dataset.push_to_hub(f"qfq/train_{pretty_name}_inference")
     jdump(result, f"results/difficulty_classification/{pretty_name}/inference_output.json")
 
-def assemble_output_gemini():
-    jsons = glob("results/gemini/geminiall/*.json")
-    dataset = load_dataset("qfq/train")['train']
-    key_map_dataset = {}
-    for example in tqdm(dataset, desc="Mapping dataset to hash"):
-        key_map_dataset[question_hash(example['question'])] = example
-    for json_path in tqdm(jsons, desc="Creating grading input"):
-        qdict = jload(json_path)
-        qhash = qdict['question_hash']
-        if qhash in key_map_dataset:
-            new_qdict = dict(question=qdict['question'],
-                             solution=key_map_dataset[qhash]['solution'],
-                             attempt=qdict['response'])
-            jdump(new_qdict, f"results/difficulty_classification/gemini/grading_input/{qhash}.json")
-
 if __name__ == "__main__":
     shard_question()
     parser = HfArgumentParser(DataModuleConfigs)
     difficulty_classification(**asdict(parser.parse_args_into_dataclasses()[0]))
 
-    assemble_output("Qwen/Qwen2.5-7B-Instruct")
-    assemble_output("Qwen/Qwen2.5-32B-Instruct")
-    assemble_output_gemini()
+    assemble_output("deepseek-ai/DeepSeek-R1-Distill-Qwen-7B")
+    assemble_output("deepseek-ai/DeepSeek-R1-Distill-Qwen-14B")
